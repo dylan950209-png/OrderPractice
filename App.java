@@ -64,12 +64,19 @@ public class App {
         .filter(o -> "PAID".equals(o.getStatus())) //2.過濾關卡：只留狀態是 PAID 的
         .mapToInt(o -> o.getAmount())              //3.轉換關卡：只抽出每筆訂單的「金額(int)」
         .sum();                                    //4.結算關卡：全部加起來！
-        System.out.println("Stream 算出的總營業餘額:" + streamTotal);
+        System.out.println("總金額:" + streamTotal);
 
         int streamTotal2 = orders.stream()
         .filter(o ->"CANCELLED".equals(o.getStatus()))
         .mapToInt(o -> o.getAmount())
         .sum();
-        System.out.println("Stream 算出的總營業餘額:" + streamTotal2);
+        System.out.println("總損失金額:" + streamTotal2);
+
+        //count 的回傳類型是long
+        long paidTotal = orders.stream()
+        .filter(o -> "PAID".equals(o.getStatus()) && o.getAmount() > 450)
+        .count();
+        System.out.println("已付款且金額大於 450 元的訂單有" + paidTotal + "筆");
     }
+
 }
